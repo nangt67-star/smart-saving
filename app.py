@@ -90,8 +90,8 @@ with tab_group:
         spending = st.slider("Spending score (1 = spends little, 100 = spends a lot)", 1, 100, 50)
 
 person = pd.DataFrame([{"Annual Income (k$)": income, "Spending Score (1-100)": spending}])
-        st.write("Person columns:", person.columns.tolist())
-        st.write("Model features:", saver["features"])
+st.write("Person columns:", person.columns.tolist())
+st.write("Model features:", saver["features"])
     if st.button("Find group", type="primary"):
         # TODO 3: use saver["model"].predict(...) on person[saver["features"]] and take [0]
         group = int(saver["model"].predict(person[saver["features"]])[0])
