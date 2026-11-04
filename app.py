@@ -89,7 +89,7 @@ with tab_group:
     with col2:
         spending = st.slider("Spending score (1 = spends little, 100 = spends a lot)", 1, 100, 50)
 
-    person = pd.DataFrame([{"Annual Income (k$)": income, "Spending Score (1-100)": spending}])
+person = pd.DataFrame([{"Annual Income (k$)": income, "Spending Score (1-100)": spending}])
         st.write("Person columns:", person.columns.tolist())
         st.write("Model features:", saver["features"])
     if st.button("Find group", type="primary"):
