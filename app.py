@@ -93,7 +93,7 @@ with tab_group:
 
     if st.button("Find group", type="primary"):
         # TODO 3: use saver["model"].predict(...) on person[saver["features"]] and take [0]
-        group = int(saver["model"].predict(person[saver["features"]]) 
+        group = int(saver["model"].predict(person[saver["features"]])[0]
         st.success(f"This person is in group {group}: **{saver['names'][group]}**")
         st.info(f"Savings tip: {saver['tips'][group]}")
 
