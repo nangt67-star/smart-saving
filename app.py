@@ -81,38 +81,70 @@ with tab_deposit:
             st.info("Low: send an SMS or leaflet instead of calling.")
 
 # ---------- STEP 4: unsupervised model -> saver group ----------
+
 with tab_group:
     st.subheader("Which group of customers is this person like?")
+
     col1, col2 = st.columns(2)
+
     with col1:
-        income = st.slider("Annual income (thousand $)", 15, 140, 60)
+        income = st.slider(
+            "Annual income (thousand $)", 15, 140, 60
+        )
+
     with col2:
-        spending = st.slider("Spending score (1 = spends little, 100 = spends a lot)", 1, 100, 50)
+        spending = st.slider(
+            "Spending score (1 = spends little, 100 = spends a lot)",
+            1, 100, 50
+        )
 
-person = pd.DataFrame([{
-    "Annual Income (k$)": income,
-    "Spending Score (1-100)": spending
-}])
+    person = pd.DataFrame([{
+        "Annual Income (k$)": income,
+        "Spending Score (1-100)": spending
+    }])
 
-st.write("Person columns:", person.columns.tolist())
-st.write("Model features:", saver["features"])
+    st.write("Person columns:", person.columns.tolist())
+    st.write("Model features:", saver["features"])
 
-if st.button("Find group", type="primary"):
-    group = int(saver["model"].predict(
-        person[saver["features"]]
-    )[0])
+    if st.button("Find group", type="primary"):
 
-    st.success(f"This person is in group {group}")
-    st.info(f"Savings tip: {saver['tips'][group]}")
+        group = int(
+            saver["model"].predict(
+                person[saver["features"]]
+            )[0]
+        )
 
-        st.write("Average customer in each group (this person is the last row):")
+        st.success(
+            f"This person is in group {group}: "
+            f"**{saver['names'][group]}**"
+        )
+
+        st.info(
+            f"Savings tip: {saver['tips'][group]}"
+        )
+
+        st.write(
+            "Average customer in each group (this person is the last row):"
+        )
+
         table = saver["profile"].copy()
-        table.index = [saver["names"][g] for g in table.index]
+
+        table.index = [
+            saver["names"][g] for g in table.index
+        ]
+
         table.loc["➡️ This person"] = person.iloc[0]
+
         st.dataframe(table.round(1))
 
         st.write("All 200 customers, coloured by group:")
-        st.scatter_chart(customers, x="Annual Income (k$)", y="Spending Score (1-100)", color="group_name")
+
+        st.scatter_chart(
+            customers,
+            x="Annual Income (k$)",
+            y="Spending Score (1-100)",
+            color="group_name"
+        )
 
 # ---------- STEP 5: explain the models ----------
 with tab_about:
